@@ -1,7 +1,7 @@
 --maze generator, static
 --built to be dynamic, but trouble figuring out how to get random number at the moment
 
---useage: maze <width> <height>
+--usage: maze <width> <height>
 
 --Andrew Guttman
 --2/28/2014
