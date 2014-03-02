@@ -4,12 +4,15 @@
 --useage: mazeGen <width> <height>
 
 --Andrew Guttman
---3/1/2014
+--3/2/2014
 
 import System.Random
 
 --setup
 makeMaze :: Int -> Int -> [Int] -> ([[Bool]],[[Bool]])
+makeMaze 0 _ _ = ([[]],[[]])
+makeMaze _ 0 _ = ([[]],[[]])
+makeMaze 1 1 _ = ([[True]],[[True]])
 makeMaze width height (a:b:cs) = do
     let rWalls = (make2D width height True)
     let bWalls = (make2D width height True)
@@ -58,11 +61,12 @@ removeBWall (x1, y1) (x2, y2) walls
     | otherwise = walls
 
 --prints
-maze :: Int -> Int -> [Int] -> IO()
-maze x y list =  putStr (strMaze (makeMaze x y list) (0,0) y)
+printMaze :: Int -> Int -> [Int] -> IO()
+printMaze x y list =  putStr (strMaze (makeMaze x y list) (0,0) y)
 
 --constructs string
 strMaze :: ([[Bool]],[[Bool]]) -> (Int, Int) -> Int -> String
+strMaze ([[]],[[]]) _ _ = ""
 strMaze (rWalls, bWalls) (0, y) height = strTop rWalls ++ strTop rWalls ++ strMaze (rWalls, bWalls) (1, y) height
 strMaze (rWalls, bWalls) (x, y) height = 
     (if y == height then "\n" else "00   " ++ strR rWalls (x, y) ++ "00   " ++ strR rWalls (x, y) ++ strB bWalls (x, y) ++ strB bWalls (x, y) ++ strMaze (rWalls, bWalls) (x, y+1) height)
@@ -101,7 +105,8 @@ replace2D (num1,num2) val (x:xs) = x:replace2D ((num1-1),num2) val xs
 read2D :: (Int, Int) -> [[Bool]] -> Bool
 read2D (num1,num2) list = (list !! num1) !! num2
 
+--main
 mazeGen x y = do
     g <- newStdGen
     let list = take (x * y * 4) (randoms g :: [Int])
-    maze x y list
+    printMaze x y list
