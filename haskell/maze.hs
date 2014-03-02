@@ -10,8 +10,6 @@ import System.Random
 
 --setup
 makeMaze :: Int -> Int -> [Int] -> ([[Bool]],[[Bool]])
-makeMaze 0 _ _ = ([[]],[[]])
-makeMaze _ 0 _ = ([[]],[[]])
 makeMaze 1 1 _ = ([[True]],[[True]])
 makeMaze width height (a:b:cs) = do
     let rWalls = (make2D width height True)
@@ -44,9 +42,9 @@ neighborCheck list _ _ _= list
 --dfs helper
 neighbors :: (Int, Int) -> Int -> Int -> [(Int, Int)]
 neighbors (x, y) width height = (if x == 0            then [] else [(x-1, y  )])++
-                               (if x == (width - 1)  then [] else [(x+1, y  )])++
-                               (if y == 0            then [] else [(x  , y-1)])++
-                               (if y == (height - 1) then [] else [(x  , y+1)])
+                                (if x == (width - 1)  then [] else [(x+1, y  )])++
+                                (if y == 0            then [] else [(x  , y-1)])++
+                                (if y == (height - 1) then [] else [(x  , y+1)])
 
 --connects horizontal
 removeRWall :: (Int, Int) -> (Int, Int) -> [[Bool]] -> [[Bool]]
@@ -62,11 +60,12 @@ removeBWall (x1, y1) (x2, y2) walls
 
 --prints
 printMaze :: Int -> Int -> [Int] -> IO()
-printMaze x y list =  putStr (strMaze (makeMaze x y list) (0,0) y)
+printMaze 0 _ _ = putStr ""
+printMaze _ 0 _ = putStr ""
+printMaze x y list = putStr (strMaze (makeMaze x y list) (0,0) y)
 
 --constructs string
 strMaze :: ([[Bool]],[[Bool]]) -> (Int, Int) -> Int -> String
-strMaze ([[]],[[]]) _ _ = ""
 strMaze (rWalls, bWalls) (0, y) height = strTop rWalls ++ strTop rWalls ++ strMaze (rWalls, bWalls) (1, y) height
 strMaze (rWalls, bWalls) (x, y) height = 
     (if y == height then "\n" else "00   " ++ strR rWalls (x, y) ++ "00   " ++ strR rWalls (x, y) ++ strB bWalls (x, y) ++ strB bWalls (x, y) ++ strMaze (rWalls, bWalls) (x, y+1) height)
