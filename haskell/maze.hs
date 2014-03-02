@@ -1,7 +1,7 @@
 --maze generator
---small bug fix, formatting change
+--small bug fixes
 
---useage: mazeGen <width> <height>
+--usage: mazeGen <width> <height>
 
 --Andrew Guttman
 --3/2/2014
